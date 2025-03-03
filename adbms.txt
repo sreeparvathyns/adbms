@@ -1,0 +1,52 @@
+Q1: Create a department table with the following columns: dept_id (PK), dept_name(not null), dept_location.
+SQL>create table department112(dept_id numeric(5) primary key,dept_name varchar(20) not null,dept_location varchar(10));
+Table created.
+
+Q2: Write a SQL query to create an employee table with the following columns: emp_id(PK), emp_name, emp_salary (>20k), emp_join_date (between June 1998- tilldate), dept_id (FK).
+ create table employee112(emp_id numeric(5) primary key,emp_name varchar(10),emp_salary numeric(10,2) CHECK(emp_salary>20000),emp_join_date DATE CHECK(emp_join_date>=date'1998-06-01'),dept_id numeric(10),foreign key(dept_id)references department112(dept_id));  
+
+Q3: Create table support table with s_id (PK), emp_id (FK), dept_id (FK), status
+(Yes/No).
+create table support(s_id numeric(10) primary key,emp_id numeric(10),dept_id numeric(5),status varchar(3) CHECK(status IN('Yes','No')),foreign key(emp_id)references employee112(emp_id),foreign key(dept_id) references department112(dept_id));
+Table created.
+
+Q4: Display the schema of the above three tables.
+SQL> desc department112;
+ Name											   Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ DEPT_ID										   NOT NULL NUMBER(5)
+ DEPT_NAME										   NOT NULL VARCHAR2(20)
+ DEPT_LOCATION										    VARCHAR2(10)
+
+SQL> desc employee112;
+ Name											   Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ EMP_ID 										   NOT NULL NUMBER(5)
+ EMP_NAME										    VARCHAR2(10)
+ EMP_SALARY										    NUMBER(10,2)
+ EMP_JOIN_DATE										    DATE
+ DEPT_ID										    NUMBER(10)
+
+SQL> desc support;
+ Name											   Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ S_ID											   NOT NULL NUMBER(10)
+ EMP_ID 										    NUMBER(10)
+ DEPT_ID										    NUMBER(5)
+ STATUS 										    VARCHAR2(3)
+
+Q5: Alter the employee table to add a new column emp_email of type VARCHAR(100).
+SQL> alter table employee112 modify emp_salary numeric(12,2);
+Table altered.
+
+Q6: Drop the support table if it is no longer required.
+SQL> drop table support;
+
+Table dropped.
+
+Q7: Modify the emp_salary column in the employee table to allow values up to
+DECIMAL(12, 2).
+SQL> alter table employee112 modify emp_salary decimal(12,2);
+Table altered.
+
+

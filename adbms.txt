@@ -1,8 +1,13 @@
+sqlplus mca112/mca112@172.16.50.33/FISAT
+
+1. DDL (Data Definition Language) Questions
+
 Q1: Create a department table with the following columns: dept_id (PK), dept_name(not null), dept_location.
 SQL>create table department112(dept_id numeric(5) primary key,dept_name varchar(20) not null,dept_location varchar(10));
 Table created.
 
 Q2: Write a SQL query to create an employee table with the following columns: emp_id(PK), emp_name, emp_salary (>20k), emp_join_date (between June 1998- tilldate), dept_id (FK).
+
  create table employee112(emp_id numeric(5) primary key,emp_name varchar(10),emp_salary numeric(10,2) CHECK(emp_salary>20000),emp_join_date DATE CHECK(emp_join_date>=date'1998-06-01'),dept_id numeric(10),foreign key(dept_id)references department112(dept_id));  
 
 Q3: Create table support table with s_id (PK), emp_id (FK), dept_id (FK), status
@@ -36,7 +41,7 @@ SQL> desc support;
  STATUS 										    VARCHAR2(3)
 
 Q5: Alter the employee table to add a new column emp_email of type VARCHAR(100).
-SQL> alter table employee112 modify emp_salary numeric(12,2);
+SQL> alter table employee112 add emp_email varchar(100);
 Table altered.
 
 Q6: Drop the support table if it is no longer required.
@@ -48,5 +53,69 @@ Q7: Modify the emp_salary column in the employee table to allow values up to
 DECIMAL(12, 2).
 SQL> alter table employee112 modify emp_salary decimal(12,2);
 Table altered.
+
+2. DML (Data Manipulation Language) Questions
+Q8: Add five suitable records to department table (Let value of dept_id starts with 101).
+
+SQL> insert into department112 values(101,'Srinivasan','NB');
+1 row created.
+
+SQL> insert into department112 values(102,'Shreya','SB');
+1 row created.
+
+SQL> insert into department112 values(103,'Shradha','NB');
+1 row created.
+
+SQL> insert into department112 values(104,'Shravan','NB');
+1 row created.
+
+SQL> insert into department112 values(105,'Jude','SB');
+1 row created.
+
+SQL> select * from department112;
+
+   DEPT_ID DEPT_NAME		DEPT_LOCAT
+---------- -------------------- ----------
+       101 Srinivasan		NB
+       102 Shreya		SB
+       103 Shradha		NB
+       104 Shravan		NB
+       105 Jude 		SB
+
+Q9: Insert the following employee record into the employee table: emp_id = 1, emp_name
+= 'John Doe', emp_salary = 60000, emp_join_date = '15-05-2021', dept_id
+= 101.
+
+insert into employee112 values(1,'John Doe',60000,TO_DATE('14-05-2021','DD-MM-YYYY'),101,'john@mail.com');
+
+Q10: Insert multiple records of employees into the employee table with emp_id, emp_name,
+emp_salary, and dept_id.
+
+SQL> INSERT INTO employee112 VALUES  (2, 'Jane Smith', 65000,TO_DATE('21-05-2015','DD-MM-YYYY'), 102,'jane@mail.com');
+1 row created.
+
+SQL> INSERT INTO employee112 VALUES (3, 'David J', 55000,TO_DATE('22-05-2015','DD-MM-YYYY'), 103,'david@mail.com');
+1 row created.
+
+SQL> INSERT INTO employee112 VALUES(4, 'Emma Brown', 70000, TO_DATE('23-05-2015','DD-MM-YYYY'), 104,'emma@mail.com');
+1 row created. 
+    
+
+Q11: Update the salary of the employee with emp_id = 1 by increasing it by 10%.
+SQL> update employee112 set emp_salary=emp_salary*1.10 where emp_id=1;
+1 row updated.
+
+Q12: Delete the record of the employee with emp_id = 1.
+SQL> delete from employee112 where emp_id=1;
+1 row deleted.
+
+Q13: Update the emp_salary of employees in dept_id = 101 to 10% more if their current
+salary is less than 50000.
+SQL>  update employee112 set emp_salary=emp_salary*1.10 where dept_id=101 and emp_salary<50000;
+0 rows updated.
+
+
+
+
 
 

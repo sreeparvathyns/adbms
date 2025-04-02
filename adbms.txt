@@ -55,6 +55,7 @@ SQL> alter table employee112 modify emp_salary decimal(12,2);
 Table altered.
 
 2. DML (Data Manipulation Language) Questions
+
 Q8: Add five suitable records to department table (Let value of dept_id starts with 101).
 
 SQL> insert into department112 values(101,'Srinivasan','NB');
@@ -76,17 +77,23 @@ SQL> select * from department112;
 
    DEPT_ID DEPT_NAME		DEPT_LOCAT
 ---------- -------------------- ----------
-       101 Srinivasan		NB
-       102 Shreya		SB
-       103 Shradha		NB
-       104 Shravan		NB
-       105 Jude 		SB
+       101 Marketing		NB
+       102 MCA			SB
+       103 MBA			NB
+       104 CSE			NB
+       105 EEE			SB
+       106 CIVIL		NB
+       107 ECE			Ernakulam
+
+7 rows selected.
+
 
 Q9: Insert the following employee record into the employee table: emp_id = 1, emp_name
 = 'John Doe', emp_salary = 60000, emp_join_date = '15-05-2021', dept_id
 = 101.
 
-insert into employee112 values(1,'John Doe',60000,TO_DATE('14-05-2021','DD-MM-YYYY'),101,'john@mail.com');
+SQL>insert into employee112 values(1,'John Doe',60000,TO_DATE('14-05-2021','DD-MM-YYYY'),101,'john@mail.com');
+1 row created.
 
 Q10: Insert multiple records of employees into the employee table with emp_id, emp_name,
 emp_salary, and dept_id.
@@ -113,6 +120,443 @@ Q13: Update the emp_salary of employees in dept_id = 101 to 10% more if their cu
 salary is less than 50000.
 SQL>  update employee112 set emp_salary=emp_salary*1.10 where dept_id=101 and emp_salary<50000;
 0 rows updated.
+
+3. SELECT with Filters (WHERE, HAVING, GROUP BY, ORDER BY)
+
+Q14: Write a SELECT query to list all employees with their emp_id, emp_name, and emp_salary.
+
+SQL> select emp_id,emp_name,emp_Salary from employee112;
+
+    EMP_ID EMP_NAME   EMP_SALARY
+---------- ---------- ----------
+	 2 Jane Smith	   65000
+	 3 David J	   55000
+	 4 Emma Brown	   70000
+	 5 krithika	   90000
+	 6 ajmal	  100000
+	 7 Jai		  100000
+	 8 Joe		  100000
+	 9 Jim		  100000
+	10 June 	  100000
+	11 sk		  100000
+
+10 rows selected.
+
+Q15: Retrieve the emp_name, emp_salary, and emp_join_date for employees whose
+salary is greater than 50000.
+
+SQL> select emp_name,emp_salary,emp_join_date from employee112 where emp_salary>50000;
+
+EMP_NAME   EMP_SALARY EMP_JOIN_
+---------- ---------- ---------
+Jane Smith	65000 21-MAY-15
+David J 	55000 22-MAY-15
+Emma Brown	70000 23-MAY-15
+krithika	90000 14-MAY-24
+ajmal	       100000 12-MAY-24
+Jai	       100000 12-MAY-24
+Joe	       100000 12-MAY-24
+Jim	       100000 12-MAY-24
+June	       100000 12-MAY-24
+sk	       100000 12-MAY-24
+
+10 rows selected.
+
+Q16: List employees in the employee table ordered by emp_salary in descending order.
+
+SQL> select emp_name from employee112  order by emp_salary desc ;
+
+
+EMP_NAME
+----------
+ajmal
+June
+Jim
+Joe
+sk
+Jai
+krithika
+Emma Brown
+Jane Smith
+David J
+
+10 rows selected.
+
+Q17: Retrieve all employees' names and salaries who joined after 01-01-2020.
+
+select emp_name,emp_salary from employee112 where emp_join_date> date '2020-01-01';
+
+EMP_NAME   EMP_SALARY
+---------- ----------
+krithika	90000
+ajmal	       100000
+Jai	       100000
+Joe	       100000
+Jim	       100000
+June	       100000
+sk	       100000
+
+7 rows selected.
+
+Q18: Write a query to select all employees whose name starts with "J".
+
+SQL> select emp_name from employee112 where emp_name like 'J%';
+
+EMP_NAME
+----------
+Jane Smith
+Jai
+Joe
+Jim
+June
+
+Q19: Select the emp_name and emp_salary for employees whose salary is between 40000
+and 60000.
+
+select emp_name,emp_salary from employee112 where emp_salary between 40000 and 60000;
+
+EMP_NAME   EMP_SALARY
+---------- ----------
+David J 	55000
+
+Q20: Write a query that groups employees by dept_id and shows the total salary per
+department.
+
+select dept_id,sum(emp_salary) as total_salary from employee112 group by dept_id;
+
+   DEPT_ID TOTAL_SALARY
+---------- ------------
+       107	 100000
+       105	  90000
+       104	  70000
+       103	  55000
+       101	 400000
+       102	  65000
+       106	 100000
+
+7 rows selected.
+
+Q21: Retrieve the department-wise average salary, but only for those departments with an
+average salary above 60000.
+
+select avg(emp_salary) as average_salary from employee112 group by dept_id having avg(emp_salary)>60000;
+
+AVERAGE_SALARY
+--------------
+	100000
+	 90000
+	 70000
+	100000
+	 65000
+	100000
+
+6 rows selected.
+
+Q22: List the departments and the number of employees in each department who earn above 50000.
+
+SELECT d.DEPT_NAME, COUNT(e.EMP_ID) AS EMPLOYEE_COUNT FROM employee112 e JOIN department112 d ON e.DEPT_ID = d.DEPT_ID WHERE e.EMP_SALARY > 50000
+GROUP BY d.DEPT_NAME;
+
+DEPT_NAME	     EMPLOYEE_COUNT
+-------------------- --------------
+EEE				  1
+Marketing			  4
+MCA				  1
+MBA				  1
+CSE				  1
+ECE				  1
+CIVIL				  1
+
+7 rows selected.
+
+Q23: Use HAVING to list departments that have more than 3 employees.
+
+SELECT d.DEPT_NAME, COUNT(e.EMP_ID) AS EMPLOYEE_COUNT FROM department112 d JOIN employee112 e ON d.DEPT_ID = e.DEPT_ID GROUP BY d.DEPT_NAME HAVING COUNT(e.EMP_ID) > 3;
+
+DEPT_NAME	     EMPLOYEE_COUNT
+-------------------- --------------
+Marketing			  4
+
+4. Subquery Questions
+
+Q24: Write a query to find the names of employees who have a salary greater than the
+average salary in their department.
+
+SQL> select emp_name from employee112 where emp_salary>(select avg(emp_salary)from employee112 where dept_id=employee112.dept_id);   
+
+EMP_NAME
+----------
+krithika
+ajmal
+Jai
+Joe
+Jim
+June
+sk
+
+7 rows selected.
+
+Q25: Select the emp_name and emp_salary of employees who are in departments that are
+located in 'Ernakulam'.
+select emp
+
+Q26: Find the emp_name of employees who earn more than the highest salary in department 102.
+
+
+Q27: Write a query that returns the department name of the department with the highest total salary.
+
+SQL> select dept_name from department112 where dept_id=(select dept_id from employee112 group by dept_id order by sum(emp_salary)desc fetch first 1 row only);
+
+DEPT_NAME
+--------------------
+Marketing
+
+
+Q28: Find the emp_id and emp_name of employees who are working in departments withless than 10 employees.
+
+
+
+
+5. View Questions
+
+Q29: Create a view high_salary_employees that lists the emp_name and emp_salary of employees who earn above 70000.
+
+SQL> create view high_salary_employees as select emp_name,emp_salary from employee112 where emp_salary>70000;
+View created.
+
+Q30: Write a query to view the data from the high_salary_employees view.
+
+SQL> select * from high_salary_employees;
+
+EMP_NAME   EMP_SALARY
+---------- ----------
+krithika	90000
+ajmal	       100000
+Jai	       100000
+Joe	       100000
+Jim	       100000
+June	       100000
+sk	       100000
+
+Q31: Create a view to list employees along with the department name and their salary,
+filtering out employees earning below 50000.
+
+SQL>create view employee_list as select e.emp_name,d.dept_name,e.emp_salary from employee112 e join department112 d on e.dept_id=d.dept_id where e.emp_salary>=50000;
+
+View created.
+
+Q32: Drop the high_salary_employees view.
+
+SQL> drop view high_salary_employees;
+
+View dropped.
+
+6. Aggregate Function Questions
+
+Q33: Write a query to find the total salary paid in each department.
+
+SQL> select dept_id,sum(emp_salary) as total_salary from employee112 group by dept_id;
+
+   DEPT_ID TOTAL_SALARY
+---------- ------------
+       107	 100000
+       105	  90000
+       104	  70000
+       103	  55000
+       101	 400000
+       102	  65000
+       106	 100000
+
+7 rows selected.
+
+Q34: Use AVG() to find the average salary of employees in the 'Marketing' department.
+
+
+SQL> select avg(emp_salary) as average_salary from employee112 where dept_id=(select dept_id from department112 where dept_name='Marketing');
+
+AVERAGE_SALARY
+--------------
+	100000
+
+Q35: Find the employee with the highest salary in each department using MAX().
+
+SQL> select dept_id,emp_name,emp_salary as highest_salary from employee112 e where emp_salary=(select max(emp_salary) from employee112 where dept_id=e.dept_id;
+
+HIGHEST_SALARY
+--------------
+	100000
+	 90000
+	 70000
+	 55000
+	100000
+	 65000
+	100000
+
+7 rows selected.
+
+Q36: Write a query that finds the total number of employees in each department.
+
+SQL> SELECT dept_name, (SELECT COUNT(*) FROM employee112 WHERE dept_id = e.dept_id) AS no_of_employees FROM employee112 e GROUP BY dept_id,emp_name;
+
+
+   DEPT_ID NO_OF_EMPLOYEES
+---------- ---------------
+       107		 1
+       105		 1
+       104		 1
+       103		 1
+       101		 4
+       102		 1
+       106		 1
+
+7 rows selected.
+
+Q37: Calculate the sum of the salaries of all employees whose emp_salary is greater than 50000.
+
+SQL> select sum(emp_salary) as total_salary from employee112 where emp_salary>50000;
+
+TOTAL_SALARY
+------------
+      880000
+      
+7. Join Questions
+
+Q38: Write an INNER JOIN query to list employee names and their corresponding
+department names.
+
+SQL> select e.emp_name,d.dept_name from employee112 e inner join department112 d on e.dept_id=d.dept_id;
+
+EMP_NAME   DEPT_NAME
+---------- --------------------
+ajmal	   Marketing
+June	   Marketing
+Jim	   Marketing
+Joe	   Marketing
+Jane Smith MCA
+David J    MBA
+Emma Brown CSE
+krithika   EEE
+Jai	   CIVIL
+sk	   ECE
+
+10 rows selected.
+
+Q39: Use a LEFT JOIN to list all employees and their department names, including those
+who do not belong to any department.
+
+SQL> select e.emp_name,d.dept_name from employee112 e left join department112 d on e.dept_id=d.dept_id;
+
+EMP_NAME   DEPT_NAME
+---------- --------------------
+ajmal	   Marketing
+Joe	   Marketing
+Jim	   Marketing
+June	   Marketing
+Jane Smith MCA
+David J    MBA
+Emma Brown CSE
+krithika   EEE
+Jai	   CIVIL
+sk	   ECE
+Kylie
+
+10 rows selected.
+
+
+Q40: Write a RIGHT JOIN to list all departments and their corresponding employees,
+including departments with no employees.
+
+SQL> select e.emp_name,d.dept_name from employee112 e right join department112 d on e.dept_id=d.dept_id;
+
+EMP_NAME   DEPT_NAME
+---------- --------------------
+ajmal	   Marketing
+June	   Marketing
+Jim	   Marketing
+Joe	   Marketing
+Jane Smith MCA
+David J    MBA
+Emma Brown CSE
+krithika   EEE
+Jai	   CIVIL
+sk	   ECE
+
+10 rows selected.
+
+Q41: Use an OUTER JOIN to list all employees and their department names, showing NULL
+if there is no corresponding department.
+
+SQL> select e.emp_name,d.dept_name from employee112 e full outer join department112 d on e.dept_id=d.dept_id;
+
+EMP_NAME   DEPT_NAME
+---------- --------------------
+Jane Smith MCA
+David J    MBA
+Emma Brown CSE
+krithika   EEE
+ajmal	   Marketing
+Jai	   CIVIL
+Joe	   Marketing
+Jim	   Marketing
+June	   Marketing
+sk	   ECE
+
+10 rows selected.
+ 
+9. Set Operations Questions
+Q48: Use UNION to combine the lists of employees who joined before 2010 and after
+2018.
+
+SQL> select emp_name,emp_join_date from employee112 where emp_join_date<date '2020-01-01' union select emp_name,emp_join_date from employee112 where emp_join_date > date'2020-12-31';
+
+EMP_NAME   EMP_JOIN_
+---------- ---------
+David J    22-MAY-15
+Emma Brown 23-MAY-15
+Jai	   12-MAY-24
+Jane Smith 21-MAY-15
+Jim	   12-MAY-24
+Joe	   12-MAY-24
+June	   12-MAY-24
+ajmal	   12-MAY-24
+krithika   14-MAY-24
+sk	   12-MAY-24
+
+10 rows selected.
+
+Q49: Use INTERSECT to find employees who get salary in the range 40k-50k.
+
+SQL> select emp_name,emp_salary from employee112 where emp_salary>=40000 INTERSECT select emp_name,emp_salary from employee112 where emp_salary<=50000;
+
+EMP_NAME   EMP_SALARY
+---------- ----------
+David J 	50000
+Jim		48790
+sk		45000
+
+Q50: Use MINUS to list out the departments not in Ernakulam.
+
+SQL> select dept_name from department112 MINUS select dept_name from department112 where dept_location='Ernakulam';
+
+DEPT_NAME
+--------------------
+ARCH
+CIVIL
+CSE
+EEE  
+MBA
+MCA
+Marketing
+
+7 rows selected.
+
+
+
+
+
+
+
+
 
 
 

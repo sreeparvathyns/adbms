@@ -1,3 +1,65 @@
+1.)
+DECLARE
+	name varchar(20):='&name';
+	rollno number:=&rollno;
+	mark1 number:=&mark1;
+	mark2 number:=&mark2;
+	mark3 number:=&mark3;
+	mark4 number:=&mark4;
+	mark5 number:=&mark5;
+	mark6 number:=&mark6;
+	total number;
+	percentage number(8,2);
+BEGIN
+	total:=mark1+mark2+mark3+mark4+mark5+mark6;
+	percentage:=total/6;
+	DBMS_OUTPUT.PUT_LINE('STUDENT MARKLIST');
+	DBMS_OUTPUT.PUT_LINE('----------------------------------');
+	DBMS_OUTPUT.PUT_LINE('Name: '||name||'       '||'Roll Number: '||rollno);
+	DBMS_OUTPUT.PUT_LINE('Total : '||total||'      '||'Percentage : '||percentage||'%');
+	DBMS_OUTPUT.PUT_LINE('-----------------------------------');
+END;
+/
+
+OUTPUT
+
+SQL> @8
+Enter value for name: Kylie Mccartney
+old   2: 	name varchar(20):='&name';
+new   2: 	name varchar(20):='Kylie Mccartney';
+Enter value for rollno: 32
+old   3: 	rollno number:=&rollno;
+new   3: 	rollno number:=32;
+Enter value for mark1: 99
+old   4: 	mark1 number:=&mark1;
+new   4: 	mark1 number:=99;
+Enter value for mark2: 98
+old   5: 	mark2 number:=&mark2;
+new   5: 	mark2 number:=98;
+Enter value for mark3: 97
+old   6: 	mark3 number:=&mark3;
+new   6: 	mark3 number:=97;
+Enter value for mark4: 95
+old   7: 	mark4 number:=&mark4;
+new   7: 	mark4 number:=95;
+Enter value for mark5: 96
+old   8: 	mark5 number:=&mark5;
+new   8: 	mark5 number:=96;
+Enter value for mark6: 94
+old   9: 	mark6 number:=&mark6;
+new   9: 	mark6 number:=94;
+STUDENT MARKLIST
+----------------------------------
+Name: Kylie Mccartney	    Roll Number: 32
+Total : 579	 Percentage : 96.5%
+-----------------------------------
+
+PL/SQL procedure successfully completed.
+
+
+
+
+2.)
 DECLARE 
 	max_sal number(8,2);
 	v_empcount number(4);

@@ -17,3 +17,10 @@ BEGIN
 	END IF;
 END;
 /
+OUTPUT
+
+SQL> @prg2
+The highest salary is100000
+There are 6 employees with this salary
+
+PL/SQL procedure successfully completed.

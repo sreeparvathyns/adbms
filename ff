@@ -1,0 +1,19 @@
+DECLARE 
+	max_sal number(8,2);
+	v_empcount number(4);
+	v_empname employee112.emp_name%type;
+	v_empdept_id employee112.dept_id%type;
+
+BEGIN
+	select max(emp_salary) into max_sal from employee112;
+	DBMS_OUTPUT.PUT_LINE('The highest salary is'||max_sal);
+	select count(emp_id) into v_empcount from employee112 where emp_salary=max_sal;
+	IF v_empcount > 1 then
+		DBMS_OUTPUT.PUT_LINE('There are ' ||v_empcount||' employees with this salary');
+	ELSE
+		select emp_name,emp_id into v_empname,v_empdept_id from employee112 where emp_salary=max_sal;
+		DBMS_OUTPUT.PUT_LINE('The person having highest salary is : '||v_empname);
+		DBMS_OUTPUT.PUT_LINE('Employee ID'||v_empdept_id);
+	END IF;
+END;
+/

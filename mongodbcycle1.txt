@@ -1,0 +1,68 @@
+> db.createCollection("student")
+{ "ok" : 1 }
+
+> db.student.insertMany([{_id:1,name:"Sarayu",phoneno:6453789765,city:"Thrissur",yearofcourse:2024,score:98},{_id:2,name:"Sujith",phoneno:6484756335,city:"Thrissur",yearofcourse:2024,score:99},{_id:3,name:"Sarath",phoneno:6453789765,city:"Kochi",yearofcourse:2025,score:95},{_id:4,name:"Shawn",phoneno:6453789785,city:"Kozhikode",yearofcourse:2022,score:90},{_id:5,name:"Kylie",phoneno:6453789768,city:"Thrissur",yearofcourse:2024,score:88}])
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4, 5 ] }
+> db.student.find()
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 98 }
+{ "_id" : 2, "name" : "Sujith", "phoneno" : 6484756335, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 99 }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "city" : "Kochi", "yearofcourse" : 2025, "score" : 95 }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "city" : "Kozhikode", "yearofcourse" : 2022, "score" : 90 }
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 88 }
+
+> db.student.find({},{rollno:1,name:1,phoneno:1,city:1})
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "city" : "Thrissur" }
+{ "_id" : 2, "name" : "Sujith", "phoneno" : 6484756335, "city" : "Thrissur" }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "city" : "Kochi" }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "city" : "Kozhikode" }
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "city" : "Thrissur" }
+
+>  db.student.find({score:{$gt:90}},{city:"Thrissur"})
+{ "_id" : 1, "city" : "Thrissur" }
+{ "_id" : 2, "city" : "Thrissur" }
+{ "_id" : 3, "city" : "Thrissur" }
+
+> db.student.updateOne({_id:2},{$set:{phoneno:8373635373}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> db.student.find()
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 98 }
+{ "_id" : 2, "name" : "Sujith", "phoneno" : 8373635373, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 99 }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "city" : "Kochi", "yearofcourse" : 2025, "score" : 95 }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "city" : "Kozhikode", "yearofcourse" : 2022, "score" : 90 }
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "city" : "Thrissur", "yearofcourse" : 2024, "score" : 88 }
+
+> db.student.find({name:"Sarayu"},{_id:1,city:1})
+{ "_id" : 1, "city" : "Thrissur" }
+
+> db.student.countDocuments({yearofcourse:{$gt:2020}})
+5
+
+> db.student.find().sort({name:1})
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "city" : "Thrissur", "yearofcourse" : 2021, "score" : 88 }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "city" : "Kochi", "yearofcourse" : 2021, "score" : 95 }
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "city" : "Thrissur", "yearofcourse" : 2021, "score" : 98 }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "city" : "Kozhikode", "yearofcourse" : 2021, "score" : 90 }
+{ "_id" : 2, "name" : "Sujith", "phoneno" : 8373635373, "city" : "Thrissur", "yearofcourse" : 2021, "score" : 99 }
+
+> db.student.updateMany({},{$rename:{"city":"town"}})
+{ "acknowledged" : true, "matchedCount" : 5, "modifiedCount" : 5 }
+> db.student.find()
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "yearofcourse" : 2021, "score" : 98, "town" : "Thrissur" }
+{ "_id" : 2, "name" : "Sujith", "phoneno" : 8373635373, "yearofcourse" : 2021, "score" : 99, "town" : "Thrissur" }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "yearofcourse" : 2021, "score" : 95, "town" : "Kochi" }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "yearofcourse" : 2021, "score" : 90, "town" : "Kozhikode" }
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "yearofcourse" : 2021, "score" : 88, "town" : "Thrissur" }
+
+> db.student.deleteOne({name:"Sujith"})
+{ "acknowledged" : true, "deletedCount" : 1 }
+> db.student.find()
+{ "_id" : 1, "name" : "Sarayu", "phoneno" : 6453789765, "yearofcourse" : 2021, "score" : 98, "town" : "Thrissur" }
+{ "_id" : 3, "name" : "Sarath", "phoneno" : 6453789765, "yearofcourse" : 2021, "score" : 95, "town" : "Kochi" }
+{ "_id" : 4, "name" : "Shawn", "phoneno" : 6453789785, "yearofcourse" : 2021, "score" : 90, "town" : "Kozhikode" }
+{ "_id" : 5, "name" : "Kylie", "phoneno" : 6453789768, "yearofcourse" : 2021, "score" : 88, "town" : "Thrissur" }
+> 
+
+
+
+
+
